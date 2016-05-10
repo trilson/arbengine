@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArbitrageEngine", "ArbitrageEngine\ArbitrageEngine.csproj", "{8B7200B0-13A9-4633-9BC0-0D40F4C64476}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8B7200B0-13A9-4633-9BC0-0D40F4C64476}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B7200B0-13A9-4633-9BC0-0D40F4C64476}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B7200B0-13A9-4633-9BC0-0D40F4C64476}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B7200B0-13A9-4633-9BC0-0D40F4C64476}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = ArbitrageEngine\ArbitrageEngine.csproj
+	EndGlobalSection
+EndGlobal
