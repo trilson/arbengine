@@ -6,3 +6,4 @@ ArbitrageEngine/obj/Debug/ArbitrageEngine.csprojResolveAssemblyReference.cache
 *.cache
 *.txt
 *.nupkg
+*.suo
