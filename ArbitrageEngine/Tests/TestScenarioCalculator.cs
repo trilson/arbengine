@@ -11,6 +11,7 @@ namespace ArbitrageEngine.Tests
     {
         /// <summary>
         /// Tests 2 dummy exchanges with limited market data and no constraints.
+        /// TODO Put this into a separate TEST project
         /// </summary>
         [Test]
         public void TestCalculateSimple()

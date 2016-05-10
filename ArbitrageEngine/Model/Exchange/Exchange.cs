@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace ArbitrageEngine.Model.Exchange
 {
 	public class ExchangeDetail
