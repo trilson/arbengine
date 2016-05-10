@@ -15,12 +15,58 @@ namespace ArbitrageEngine.Tests
         [Test]
         public void TestCalculateSimple()
         {
-            var mktData = new MarketData();
+            var askExch = new ExchangeDetail("ask");
+            var bidExch = new ExchangeDetail("bid");
 
-            var askExchange = new ExchangeDetail("test1");
-            var bidExchange = new ExchangeDetail("test2");            
-            var askExchangePref = new ExchangePreference(askExchange);
-            var bidExchangePref = new ExchangePreference(bidExchange);
+            var mktData = GetDefaultMarketData(askExch, bidExch);
+            var scenarioCalculator = new ScenarioCalculator(mktData);
+            var askExchangePref = new ExchangePreference(askExch);
+            var bidExchangePref = new ExchangePreference(bidExch);
+
+            IArbitrageOpportunity arb;
+            bool result = scenarioCalculator.TryGetArbitrageOpportunity(askExchangePref, bidExchangePref, out arb);
+            Assert.IsTrue(result);
+            Assert.IsNotNull(arb);
+            Assert.AreEqual(1000m, arb.ProfitUSD);
+            Assert.AreEqual(100m, arb.TotalBTCTraded);
+            Assert.AreEqual(10000m, arb.TotalUSDTraded);
+
+            // Now set a USD limit
+            askExchangePref.USDBalance = 100m;
+            IArbitrageOpportunity arb2;
+            result = scenarioCalculator.TryGetArbitrageOpportunity(askExchangePref, bidExchangePref, out arb2);
+            Assert.IsTrue(result);
+            Assert.IsNotNull(arb);
+            Assert.AreEqual(10m, arb2.ProfitUSD);
+            Assert.AreEqual(1m, arb2.TotalBTCTraded);
+            Assert.AreEqual(100m, arb2.TotalUSDTraded);
+        }
+
+        [Test]
+        public void TestCalculateSimpleWithFee()
+        {
+            var askExch = new ExchangeDetail("ask");
+            askExch.TradeFeePct = 0.05m; // take a 5% cut
+
+            var bidExch = new ExchangeDetail("bid");
+
+            var mktData = GetDefaultMarketData(askExch, bidExch);
+            var scenarioCalculator = new ScenarioCalculator(mktData);
+            var askExchangePref = new ExchangePreference(askExch);
+            var bidExchangePref = new ExchangePreference(bidExch);
+
+            IArbitrageOpportunity arb;
+            bool result = scenarioCalculator.TryGetArbitrageOpportunity(askExchangePref, bidExchangePref, out arb);
+            Assert.IsTrue(result);
+            Assert.IsNotNull(arb);
+            Assert.AreEqual(500m, arb.ProfitUSD);
+            Assert.AreEqual(100m, arb.TotalBTCTraded);
+            Assert.AreEqual(10500m, arb.TotalUSDTraded);
+        }
+
+        public MarketData GetDefaultMarketData(ExchangeDetail askExch, ExchangeDetail bidExch)
+        {
+            var mktData = new MarketData();
 
             var askOB = new OrderBook();
             var bidOB = new OrderBook();
@@ -36,26 +82,10 @@ namespace ArbitrageEngine.Tests
             askOB.SetAsks(asks);
             bidOB.SetBids(bids);
 
-            mktData.AddOrderBook(askExchange, askOB);
-            mktData.AddOrderBook(bidExchange, bidOB);
+            mktData.AddOrderBook(askExch, askOB);
+            mktData.AddOrderBook(bidExch, bidOB);
 
-            var scenarioCalculator = new ScenarioCalculator(mktData);
-
-            IArbitrageOpportunity arb;
-            bool result = scenarioCalculator.TryGetArbitrageOpportunity(askExchangePref, bidExchangePref, out arb);
-            Assert.IsTrue(result);
-            Assert.IsNotNull(arb);
-            Assert.AreEqual(1000m, arb.ProfitUSD);
-
-            // Now set a USD limit
-            askExchangePref.USDBalance = 100m;
-            IArbitrageOpportunity arb2;
-            result = scenarioCalculator.TryGetArbitrageOpportunity(askExchangePref, bidExchangePref, out arb2);
-            Assert.IsTrue(result);
-            Assert.IsNotNull(arb);
-            Assert.AreEqual(10m, arb2.ProfitUSD);
-            Assert.AreEqual(1m, arb2.TotalBTCTraded);
-            Assert.AreEqual(100m, arb2.TotalUSDTraded);
+            return mktData;
         }
     }
 }

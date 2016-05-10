@@ -1,0 +1,8 @@
+*.xml
+ArbitrageEngine/bin/Debug/nunit.framework.dll
+*.pdb
+*.dll
+ArbitrageEngine/obj/Debug/ArbitrageEngine.csprojResolveAssemblyReference.cache
+*.cache
+*.txt
+*.nupkg
